@@ -18,9 +18,8 @@ int main(){
                 scanf("%d", &matriz[i][j]);
             }
         }
-        int probabilidade;
-        for(int i = 0; i< m; i++){
-            for(int j = 0; );
+        int cont = 0, found = 0;
+        while(cont > m && found == 0){
         }
         scanf("%d %d %d %d", &n, &t, &k, &m);
         h++;
