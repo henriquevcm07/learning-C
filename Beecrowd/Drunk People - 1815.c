@@ -1,28 +1,49 @@
 #include <stdio.h>
-/*o Mr. Třeboň não segue nenhuma ordem lógica para tocar as campainhas das casas. Após tocar uma campainha e verificar que não é a sua casa, 
-ele irá continuar procurando. Além disso, ele não consegue memorizar quais campainhas já tocou. A forma como ele escolhe as casas para tocar a 
-campainha segue uma distribuição de probabilidade condicionada apenas à última casa tocada. 
-Considere que alguém sempre atende à porta e responde ao Mr. Třeboň se ele mora ali ou não. Queremos saber qual a chance dele não conseguir 
-chegar em casa para dormir, sabendo que após tocar um certo número de campainhas ele não aguentará mais e ficará por ali mesmo. */
-int main(){
+
+int main() {
     int n, t, k, m, h = 1;
-    int matriz[n][n];
-    //n = num de casas, t = casa inicial, k = casa alvo, m =  quantidade de tentativas, h = iteração atual.
-    scanf("%d %d %d %d", &n, &t, &k, &m);
-    //loop principal do programa
-    while (n!=0){
-        printf("Instancia %d\n", h);
-        //loop duplo de probabilidades de i -> j
-        for(int i = 0; i < n; i++){
-            for(int j=0; j < n; i++){ 
-                scanf("%d", &matriz[i][j]);
+    double matriz[105][105];
+
+    while (scanf("%d %d %d %d", &n, &t, &k, &m) == 4 && n != 0) {
+        t--;
+        k--;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                scanf("%lf", &matriz[i][j]);
             }
         }
-        int cont = 0, found = 0;
-        while(cont > m && found == 0){
+
+        double prob[105] = {0.0};
+        prob[t] = 1.0;
+
+        for (int passo = 0; passo < m; passo++) {
+            double novaProb[105] = {0.0};
+
+            for (int i = 0; i < n; i++) {
+                if (i == k) continue;
+
+                for (int j = 0; j < n; j++) {
+                    novaProb[j] += prob[i] * matriz[i][j];
+                }
+            }
+
+            for (int i = 0; i < n; i++) {
+                prob[i] = novaProb[i];
+            }
         }
-        scanf("%d %d %d %d", &n, &t, &k, &m);
+
+        double falha = 0.0;
+        for (int i = 0; i < n; i++) {
+            if (i != k) {
+                falha += prob[i];
+            }
+        }
+
+        printf("Instancia %d\n", h);
+        printf("%.6lf\n\n", falha);
         h++;
     }
+
     return 0;
 }
